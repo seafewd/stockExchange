@@ -19,7 +19,7 @@ public class Bid {
 	}
 	
 	public String toString(){
-		return this.name + ", " + this.bid;
+		return this.name + " " + this.bid;
 	}
 }
 

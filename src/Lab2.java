@@ -75,7 +75,10 @@ public class Lab2 {
 		sb.append("Sellers: ");
 
 		while(sell_pq.size() > 0) {
-			sb.append(sell_pq.minimum()).append(", ");
+			String separator = ", ";
+			if (sell_pq.size() == 1)
+				separator = "";
+			sb.append(sell_pq.minimum()).append(separator);
 			sell_pq.deleteMinimum();
 		}
 
@@ -83,7 +86,10 @@ public class Lab2 {
 		// TODO: print remaining buyers
 		//       can remove from priority queue until it is empty.
 		while(buy_pq.size() > 0) {
-			sb.append(buy_pq.minimum() + ", ");
+			String separator = ", ";
+			if (buy_pq.size() == 1)
+				separator = "";
+			sb.append(buy_pq.minimum()).append(separator);
 			buy_pq.deleteMinimum();
 		}
 
