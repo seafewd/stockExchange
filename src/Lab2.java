@@ -53,27 +53,26 @@ public class Lab2 {
 
 			if( sell_pq.size() == 0 || buy_pq.size() == 0 )continue;
 			
-			// TODO:
 			// compare the bids of highest priority from each of
 			// each priority queues.
 			// if the lowest seller price is lower than or equal to
 			// the highest buyer price, then remove one bids.txt from
 			// each priority queue and add a description of the
 			// transaction to the output.
-			if (sell_pq.minimum().bid <= buy_pq.minimum().bid) {
-				String buyerName = buy_pq.minimum().name;
-				String sellerName = sell_pq.minimum().name;
-				int sellValue = sell_pq.minimum().bid;
+			Bid minSellBid = sell_pq.minimum();
+			Bid minBuyBid = buy_pq.minimum();
+			if (minSellBid.bid <= minBuyBid.bid) {
+				System.out.println(minBuyBid.name + " buys from " + minSellBid.name + " for " + minSellBid.bid + "kr");
 				buy_pq.deleteMinimum();
 				sell_pq.deleteMinimum();
-				System.out.println(buyerName + " buys from " + sellerName + " for " + sellValue + "kr");
 			}
 		}
 
+		// print complete order book of remaining bids
 		sb.append("\nOrder book:\n");
 
+		// print remaining sellers
 		sb.append("Sellers: ");
-
 		while(sell_pq.size() > 0) {
 			String separator = ", ";
 			if (sell_pq.size() == 1)
@@ -82,9 +81,8 @@ public class Lab2 {
 			sell_pq.deleteMinimum();
 		}
 
+		//print remaining buyers
 		sb.append("\nBuyers: ");
-		// TODO: print remaining buyers
-		//       can remove from priority queue until it is empty.
 		while(buy_pq.size() > 0) {
 			String separator = ", ";
 			if (buy_pq.size() == 1)

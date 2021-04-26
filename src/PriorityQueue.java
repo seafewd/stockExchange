@@ -34,7 +34,6 @@ public class PriorityQueue<E> {
 
 	// update a bid
 	public void update(E oldVal, E newVal) {
-		//todo do this with HashMap
 		Integer originalBidIndex = bidMap.get(oldVal);
 		if (originalBidIndex == null)
 			throw new NoSuchElementException();
