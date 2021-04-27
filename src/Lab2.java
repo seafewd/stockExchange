@@ -6,8 +6,8 @@ public class Lab2 {
 	public static String pureMain(String[] commands) {
 		// TODO: declaration of two priority queues
 
-		PriorityQueue<Bid> sell_pq = new PriorityQueue<>(new BidComparator());
-		PriorityQueue<Bid> buy_pq = new PriorityQueue<>(new BidComparator());
+		PriorityQueue<Bid> sell_pq = new PriorityQueue<>(new SellComparator());
+		PriorityQueue<Bid> buy_pq = new PriorityQueue<>(new BuyComparator());
 
 		StringBuilder sb = new StringBuilder();
 
@@ -31,20 +31,21 @@ public class Lab2 {
 			}
 
 			Bid bid = new Bid(name, price);
+			// check action and put new trading orders
 			if( action.equals("K") ) {
-				// TODO: add new buy bids.txt
+				// add new buy order from
 				buy_pq.add(bid);
 				//System.out.println("buy order placed by " + bid.name + " at " + bid.bid + "kr");
 			} else if( action.equals("S") ) {
-				// TODO: add new sell bids.txt
+				// add new sell order
 				sell_pq.add(bid);
 				//System.out.println("sell order placed by " + bid.name + " at " + bid.bid + "kr");
 			} else if( action.equals("NK") ){
-				// TODO: update existing buy bids.txt. use parts[3].
+				// update existing buy order
 				buy_pq.update(bid, new Bid(name, Integer.parseInt(parts[3])));
 				//System.out.println(((Bid) oldVal).name + " changed bid from " + ((Bid) oldVal).bid + " to " + ((Bid) newVal).bid + "kr");
 			} else if( action.equals("NS") ){
-				// TODO: update existing sell bids.txt. use parts[3].
+				// update existing sell buy order
 				sell_pq.update(bid, new Bid(name, Integer.parseInt(parts[3])));
 			} else {
 				throw new RuntimeException(
@@ -62,6 +63,8 @@ public class Lab2 {
 			Bid minSellBid = sell_pq.minimum();
 			Bid minBuyBid = buy_pq.minimum();
 			if (minSellBid.bid <= minBuyBid.bid) {
+				//System.out.println("deleting minimum buy: " + buy_pq.minimum());
+				//System.out.println("deleting minimum sell: " + sell_pq.minimum());
 				System.out.println(minBuyBid.name + " buys from " + minSellBid.name + " for " + minSellBid.bid + "kr");
 				buy_pq.deleteMinimum();
 				sell_pq.deleteMinimum();
