@@ -2,9 +2,9 @@ import java.util.*;
 
 // A priority queue.
 public class PriorityQueue<E> {
-	private ArrayList<E> heap = new ArrayList<E>();
-	private Comparator<E> comparator;
-	private Map<E, Integer> bidMap = new HashMap<>();
+	private final ArrayList<E> heap = new ArrayList<>();
+	private final Comparator<E> comparator;
+	private final Map<E, Integer> bidMap = new HashMap<>();
 
 	public PriorityQueue(Comparator<E> comparator) {
 		this.comparator = comparator;
@@ -19,7 +19,6 @@ public class PriorityQueue<E> {
 	public void add(E x) {
 		heap.add(x);
 		bidMap.put(x, heap.size() - 1);
-		//System.out.println("added\n" + x.toString() + "\nto map\n");
 		siftUp(size() - 1);
 	}
 
@@ -44,7 +43,7 @@ public class PriorityQueue<E> {
 		//if (((Bid) heap.get(parent(originalBidIndex))).bid > ((Bid) heap.get(originalBidIndex)).bid)
 		// sift up if the new bid is smaller than its parent, otherwise sift down
 		if (comparator.compare(newVal, heap.get(parent(originalBidIndex))) < 0)
-			siftUp(originalBidIndex - 1);
+			siftUp(originalBidIndex);
 		else
 			siftDown(originalBidIndex);
 	}
@@ -70,12 +69,16 @@ public class PriorityQueue<E> {
 	public void deleteMinimum() {
 		if (size() == 0)
 			throw new NoSuchElementException();
-
+		// remove the element from the map
+		bidMap.remove(heap.get(0));
+		// set 0th index to last element of heap
 		heap.set(0, heap.get(heap.size()-1));
+		// remove last element of heap
 		heap.remove(heap.size()-1);
 		if (heap.size() > 0) siftDown(0);
 	}
 
+	// swap map indexes
 	private void swapMapIndex(E childItem, E parentItem) {
 		Integer childIndex = bidMap.get(childItem);
 		Integer parentIndex = bidMap.get(parentItem);
@@ -96,9 +99,11 @@ public class PriorityQueue<E> {
 	// be less than its parent, but all other elements are correct.
 	private void siftUp(int index) {
 		int parentIndex = parent(index);
+		// run while node is not root and comparison checks are valid
 		while (index > 0 && comparator.compare(heap.get(index), heap.get(parentIndex)) < 0) {
 			swapMapIndex(heap.get(index), heap.get(parentIndex));
 			swap(index, parentIndex);
+			// update this node's index and its parent index
 			index = parentIndex;
 			parentIndex = parent(index);
 		}
@@ -143,15 +148,15 @@ public class PriorityQueue<E> {
 	}
 
 	// Helper functions for calculating the children and parent of an index.
-	private final int leftChild(int index) {
+	public final int leftChild(int index) {
 		return 2*index+1;
 	}
 
-	private final int rightChild(int index) {
+	public final int rightChild(int index) {
 		return 2*index+2;
 	}
 
-	private final int parent(int index) {
+	public final int parent(int index) {
 		return (index-1)/2;
 	}
 }

@@ -4,8 +4,7 @@ import java.util.*;
 
 public class Lab2 {
 	public static String pureMain(String[] commands) {
-		// TODO: declaration of two priority queues
-
+		// two PQs - for sell and buy orders
 		PriorityQueue<Bid> sell_pq = new PriorityQueue<>(new SellComparator());
 		PriorityQueue<Bid> buy_pq = new PriorityQueue<>(new BuyComparator());
 
@@ -32,23 +31,16 @@ public class Lab2 {
 
 			Bid bid = new Bid(name, price);
 			// check action and put new trading orders
-			if( action.equals("K") ) {
-				// add new buy order from
-				buy_pq.add(bid);
-				//System.out.println("buy order placed by " + bid.name + " at " + bid.bid + "kr");
-			} else if( action.equals("S") ) {
+			switch (action) {
+				// add new buy order
+				case "K" -> buy_pq.add(bid);
 				// add new sell order
-				sell_pq.add(bid);
-				//System.out.println("sell order placed by " + bid.name + " at " + bid.bid + "kr");
-			} else if( action.equals("NK") ){
+				case "S" -> sell_pq.add(bid);
 				// update existing buy order
-				buy_pq.update(bid, new Bid(name, Integer.parseInt(parts[3])));
-				//System.out.println(((Bid) oldVal).name + " changed bid from " + ((Bid) oldVal).bid + " to " + ((Bid) newVal).bid + "kr");
-			} else if( action.equals("NS") ){
-				// update existing sell buy order
-				sell_pq.update(bid, new Bid(name, Integer.parseInt(parts[3])));
-			} else {
-				throw new RuntimeException(
+				case "NK" -> buy_pq.update(bid, new Bid(name, Integer.parseInt(parts[3])));
+				// update existing sell order
+				case "NS" -> sell_pq.update(bid, new Bid(name, Integer.parseInt(parts[3])));
+				default -> throw new RuntimeException(
 						"line " + line_no + ": invalid action");
 			}
 
@@ -62,9 +54,8 @@ public class Lab2 {
 			// transaction to the output.
 			Bid minSellBid = sell_pq.minimum();
 			Bid minBuyBid = buy_pq.minimum();
+
 			if (minSellBid.bid <= minBuyBid.bid) {
-				//System.out.println("deleting minimum buy: " + buy_pq.minimum());
-				//System.out.println("deleting minimum sell: " + sell_pq.minimum());
 				System.out.println(minBuyBid.name + " buys from " + minSellBid.name + " for " + minSellBid.bid + "kr");
 				buy_pq.deleteMinimum();
 				sell_pq.deleteMinimum();
@@ -105,7 +96,7 @@ public class Lab2 {
 			actions = new BufferedReader(new FileReader(args[0]));
 		}
 
-		List<String> lines = new LinkedList<String>();
+		List<String> lines = new LinkedList<>();
 		while(true){
 			String line = actions.readLine();
 			if( line == null)break;
@@ -113,6 +104,6 @@ public class Lab2 {
 		}
 		actions.close();
 
-		System.out.println(pureMain(lines.toArray(new String[lines.size()])));
+		System.out.println(pureMain(lines.toArray(new String[0])));
 	}
 }
