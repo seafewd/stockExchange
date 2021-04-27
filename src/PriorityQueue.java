@@ -83,14 +83,16 @@ public class PriorityQueue<E> {
 	private void swapMapIndex(E childItem, E parentItem) {
 		Integer childIndex = bidMap.get(childItem);
 		Integer parentIndex = bidMap.get(parentItem);
-		bidMap.replace(childItem, parentIndex);
-		bidMap.replace(parentItem, childIndex);
+
+		bidMap.remove(childItem);
+		bidMap.remove(parentItem);
+		bidMap.put(childItem, parentIndex);
+		bidMap.put(parentItem, childIndex);
 	}
 
 	// swap nodes
 	private void swap(int index, int parentIndex) {
 		E tmp = heap.get(index);
-		swapMapIndex(heap.get(index), heap.get(parentIndex));
 		heap.set(index, heap.get(parentIndex));
 		heap.set(parentIndex, tmp);
 	}
