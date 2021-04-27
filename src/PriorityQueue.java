@@ -41,7 +41,6 @@ public class PriorityQueue<E> {
 		// update map with correct bid
 		bidMap.remove(oldVal);
 		bidMap.put(newVal, originalBidIndex);
-		//if (((Bid) heap.get(parent(originalBidIndex))).bid > ((Bid) heap.get(originalBidIndex)).bid)
 		// sift up if the new bid is smaller than its parent, otherwise sift down
 		if (comparator.compare(newVal, heap.get(parent(originalBidIndex))) < 0)
 			siftUp(originalBidIndex);
@@ -80,14 +79,14 @@ public class PriorityQueue<E> {
 	}
 
 	// swap map indexes
-	private void swapMapIndex(E childItem, E parentItem) {
-		Integer childIndex = bidMap.get(childItem);
-		Integer parentIndex = bidMap.get(parentItem);
+	private void swapMapIndex(E item1, E item2) {
+		Integer item1Index = bidMap.get(item1);
+		Integer item2Index = bidMap.get(item2);
 
-		bidMap.remove(childItem);
-		bidMap.remove(parentItem);
-		bidMap.put(childItem, parentIndex);
-		bidMap.put(parentItem, childIndex);
+		bidMap.remove(item1);
+		bidMap.remove(item2);
+		bidMap.put(item1, item2Index);
+		bidMap.put(item2, item1Index);
 	}
 
 	// swap nodes
@@ -141,7 +140,8 @@ public class PriorityQueue<E> {
 			// If the child is smaller than the parent,
 			// carry on downwards.
 			if (comparator.compare(value, childValue) > 0) {
-				swapMapIndex(heap.get(index), heap.get(parent(index)));
+				//swapMapIndex(heap.get(parent(index)), heap.get(index));
+				swapMapIndex(value, childValue);
 				heap.set(index, childValue);
 				index = child;
 			} else break;
