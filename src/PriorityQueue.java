@@ -72,7 +72,9 @@ public class PriorityQueue<E> {
 		// remove the element from the map
 		bidMap.remove(heap.get(0));
 		// set 0th index to last element of heap
-		heap.set(0, heap.get(heap.size()-1));
+		E lastElement = heap.get(heap.size() - 1);
+		heap.set(0, lastElement);
+		bidMap.put(lastElement, 0);
 		// remove last element of heap
 		heap.remove(heap.size()-1);
 		if (heap.size() > 0) siftDown(0);
@@ -140,7 +142,6 @@ public class PriorityQueue<E> {
 			// If the child is smaller than the parent,
 			// carry on downwards.
 			if (comparator.compare(value, childValue) > 0) {
-				//swapMapIndex(heap.get(parent(index)), heap.get(index));
 				swapMapIndex(value, childValue);
 				heap.set(index, childValue);
 				index = child;
