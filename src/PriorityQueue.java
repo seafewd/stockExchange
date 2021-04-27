@@ -39,7 +39,8 @@ public class PriorityQueue<E> {
 		// replace the old bid with the new bid at that index
 		heap.set(originalBidIndex, newVal);
 		// update map with correct bid
-		bidMap.replace(newVal, originalBidIndex);
+		bidMap.remove(oldVal);
+		bidMap.put(newVal, originalBidIndex);
 		//if (((Bid) heap.get(parent(originalBidIndex))).bid > ((Bid) heap.get(originalBidIndex)).bid)
 		// sift up if the new bid is smaller than its parent, otherwise sift down
 		if (comparator.compare(newVal, heap.get(parent(originalBidIndex))) < 0)
