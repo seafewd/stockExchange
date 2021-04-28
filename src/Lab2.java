@@ -65,7 +65,7 @@ public class Lab2 {
 		// print complete order book of remaining bids
 		sb.append("\nOrder book:\n");
 
-		// print remaining sellers
+		// print remaining sellers in sorted order
 		sb.append("Sellers: ");
 		while(sell_pq.size() > 0) {
 			String separator = ", ";
@@ -75,7 +75,7 @@ public class Lab2 {
 			sell_pq.deleteMinimum();
 		}
 
-		//print remaining buyers
+		//print remaining buyers in sorted order
 		sb.append("\nBuyers: ");
 		while(buy_pq.size() > 0) {
 			String separator = ", ";

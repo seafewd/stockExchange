@@ -2,10 +2,14 @@ import java.util.*;
 
 // A priority queue.
 public class PriorityQueue<E> {
+	// heap
 	private final ArrayList<E> heap = new ArrayList<>();
+	// comparator
 	private final Comparator<E> comparator;
+	// hashmap to keep track of heap indices
 	private final Map<E, Integer> bidMap = new HashMap<>();
 
+	// constructor
 	public PriorityQueue(Comparator<E> comparator) {
 		this.comparator = comparator;
 	}
@@ -16,14 +20,17 @@ public class PriorityQueue<E> {
 	}
      
 	// Adds an item to the priority queue.
+	// runs in O(logn)
 	public void add(E x) {
 		heap.add(x);
+		// add the element to the map with the new index
 		bidMap.put(x, heap.size() - 1);
 		siftUp(size() - 1);
 	}
 
 	// Returns the smallest item in the priority queue.
 	// Throws NoSuchElementException if empty.
+	// runs in O(1)
 	public E minimum() {
 		if (size() == 0)
 			throw new NoSuchElementException();
@@ -31,6 +38,8 @@ public class PriorityQueue<E> {
 	}
 
 	// update a bid
+	// finding a value normally runs in O(n) but here we use a map to find it => O(1)
+	// sifting up runs in O(logn) => O(1) + O(logn) = O(logn)
 	public void update(E oldVal, E newVal) {
 		// find array index of the old bid - O(1)
 		Integer originalBidIndex = bidMap.get(oldVal);
@@ -48,24 +57,9 @@ public class PriorityQueue<E> {
 			siftDown(originalBidIndex);
 	}
 
-	/* SCUFFED
-	public void update(E oldVal, E newVal) {
-		int oldIndex = heap.indexOf(oldVal);
-		for (int i = 0; i < heap.size(); i++) {
-			if (((Bid) heap.get(i)).bid == ((Bid) heap.get(oldIndex)).bid) {
-				System.out.println("found same bid yay");
-				heap.set(heap.indexOf(oldVal), newVal);
-				if (comparator.compare(newVal, heap.get(parent(oldIndex))) > 0)
-					siftUp(oldIndex);
-				else
-					siftDown(oldIndex);
-			}
-		}
-	}
-	*/
-
 	// Removes the smallest item in the priority queue.
 	// Throws NoSuchElementException if empty.
+	// runs in O(logn)
 	public void deleteMinimum() {
 		if (size() == 0)
 			throw new NoSuchElementException();
@@ -81,6 +75,7 @@ public class PriorityQueue<E> {
 	}
 
 	// swap map indexes
+	// runs in O(1)
 	private void swapMapIndex(E item1, E item2) {
 		Integer item1Index = bidMap.get(item1);
 		Integer item2Index = bidMap.get(item2);
@@ -92,6 +87,7 @@ public class PriorityQueue<E> {
 	}
 
 	// swap nodes
+	// runs in O(1)
 	private void swap(int index, int parentIndex) {
 		E tmp = heap.get(index);
 		heap.set(index, heap.get(parentIndex));
@@ -101,6 +97,7 @@ public class PriorityQueue<E> {
 	// Sifts a node up.
 	// siftUp(index) fixes the invariant if the element at 'index' may
 	// be less than its parent, but all other elements are correct.
+	// runs in O(logn)
 	private void siftUp(int index) {
 		int parentIndex = parent(index);
 		// run while node is not root and comparison checks are valid
@@ -116,6 +113,7 @@ public class PriorityQueue<E> {
 	// Sifts a node down.
 	// siftDown(index) fixes the invariant if the element at 'index' may
 	// be greater than its children, but all other elements are correct.
+	// runs in O(logn)
 	private void siftDown(int index) {
 		E value = heap.get(index);
 		
